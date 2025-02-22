@@ -1,0 +1,15 @@
+# Use an official Python base image
+FROM python:3.9
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the application files
+COPY failure_detector.proto client.py failure_detector_pb2.py failure_detector_pb2_grpc.py requirements.txt ./
+RUN pip uninstall -y protobuf && pip install protobuf==3.20.*
+
+# Install dependencies
+RUN pip install -r requirements.txt
+
+# Run the failure detection client with the node ID
+CMD ["sh", "-c", "python client.py $NODE_ID"]

@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  node1:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: node1
+    environment:
+      - NODE_ID=A
+      - PORT=50051
+    networks:
+      - swim_network
+
+  node2:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: node2
+    environment:
+      - NODE_ID=B
+      - PORT=50052
+    networks:
+      - swim_network
+
+  node3:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: node3
+    environment:
+      - NODE_ID=C
+      - PORT=50053
+    networks:
+      - swim_network
+
+  node4:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: node4
+    environment:
+      - NODE_ID=D
+      - PORT=50054
+    networks:
+      - swim_network
+
+  node5:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: node5
+    environment:
+      - NODE_ID=E
+      - PORT=50055
+    networks:
+      - swim_network
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: client
+    environment:
+      - NODE_ID=A  # The client runs on Node A
+    depends_on:
+      - node1
+      - node2
+      - node3
+      - node4
+      - node5
+    networks:
+      - swim_network
+
+networks:
+  swim_network:
+    driver: bridge

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package failure_detector;
+
+// The request message containing sender and receiver information
+message PingRequest {
+    string sender_id = 1;
+    string receiver_id = 2;
+}
+
+// The response message containing acknowledgment
+message PingResponse {
+    bool success = 1;
+}
+
+// The gRPC service for failure detection
+service FailureDetector {
+    // Direct ping from one node to another
+    rpc Ping(PingRequest) returns (PingResponse);
+    
+    // Indirect ping when direct ping fails
+    rpc IndirectPing(PingRequest) returns (PingResponse);
+}
