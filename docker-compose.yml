@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  python_server:
+    build:
+      context: .
+      dockerfile: python.Dockerfile
+    ports:
+      - "50051:50051"
+    networks:
+      - grpc_network
+
+  go_server:
+    build:
+      context: .
+      dockerfile: go.Dockerfile
+    ports:
+      - "50052:50051"
+    networks:
+      - grpc_network
+
+  python_client:
+    build:
+      context: .
+      dockerfile: python.Dockerfile
+    command: ["python", "client.py"]
+    depends_on:
+      - python_server
+    networks:
+      - grpc_network
+
+  go_client:
+    build:
+      context: .
+      dockerfile: go.Dockerfile
+    command: ["/app/client"]
+    depends_on:
+      - go_server
+    networks:
+      - grpc_network
+
+networks:
+  grpc_network:
