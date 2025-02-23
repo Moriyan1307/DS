@@ -1,43 +1,40 @@
-version: "3"
+version: "3.8"
 
 services:
-  python_server:
+  python-server:
     build:
       context: .
-      dockerfile: python.Dockerfile
+      dockerfile: Dockerfile-python
     ports:
       - "50051:50051"
     networks:
-      - grpc_network
+      - grpc-network
 
-  go_server:
+  python-client:
     build:
       context: .
-      dockerfile: go.Dockerfile
+      dockerfile: Dockerfile-python
+    command: python client.py
+    networks:
+      - grpc-network
+
+  go-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-go
     ports:
-      - "50052:50051"
+      - "50052:50052"
     networks:
-      - grpc_network
+      - grpc-network
 
-  python_client:
+  go-client:
     build:
       context: .
-      dockerfile: python.Dockerfile
-    command: ["python", "client.py"]
-    depends_on:
-      - python_server
+      dockerfile: Dockerfile-go
+    command: go run client.go
     networks:
-      - grpc_network
-
-  go_client:
-    build:
-      context: .
-      dockerfile: go.Dockerfile
-    command: ["/app/client"]
-    depends_on:
-      - go_server
-    networks:
-      - grpc_network
+      - grpc-network
 
 networks:
-  grpc_network:
+  grpc-network:
+    driver: bridge

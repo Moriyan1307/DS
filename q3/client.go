@@ -3,31 +3,32 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
+	"log"
+	"os"
 
-	pb "service/servicepb"
+	pb "my-proj/service"
 
 	"google.golang.org/grpc"
 )
 
 func main() {
-	conn, err := grpc.Dial("server:50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		fmt.Println("Failed to connect:", err)
-		return
+		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
 
-	client := pb.NewMathServiceClient(conn)
+	c := pb.NewMyServiceClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	resp, err := client.Add(ctx, &pb.AddRequest{Num1: 15, Num2: 25})
-	if err != nil {
-		fmt.Println("Error calling Add:", err)
-		return
+	name := "Bob"
+	if len(os.Args) > 1 {
+		name = os.Args[1]
 	}
 
-	fmt.Printf("Go Client: 15 + 25 = %d\n", resp.Result)
+	r, err := c.Greet(context.Background(), &pb.GreetingRequest{Name: name})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+
+	fmt.Printf("Go Client received: %s\n", r.GetMessage())
 }

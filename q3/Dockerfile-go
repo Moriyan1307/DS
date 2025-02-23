@@ -1,0 +1,14 @@
+# Go Dockerfile
+FROM golang:1.24-alpine
+
+WORKDIR /app
+
+COPY go.mod go.sum /app/
+RUN go mod tidy
+
+COPY . /app/
+
+RUN go build -o server server.go
+
+CMD ["./server"]
+

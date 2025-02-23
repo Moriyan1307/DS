@@ -1,16 +1,16 @@
 syntax = "proto3";
 
-package mathservice;
+package service;
 
-service MathService {
-  rpc Add (AddRequest) returns (AddResponse);
+option go_package = "./service";  
+service MyService {
+  rpc Greet (GreetingRequest) returns (GreetingResponse);
 }
 
-message AddRequest {
-  int32 num1 = 1;
-  int32 num2 = 2;
+message GreetingRequest {
+  string name = 1;
 }
 
-message AddResponse {
-  int32 result = 1;
+message GreetingResponse {
+  string message = 1;
 }

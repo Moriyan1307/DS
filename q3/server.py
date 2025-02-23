@@ -1,20 +1,19 @@
-import grpc
 from concurrent import futures
+import grpc
 import service_pb2
 import service_pb2_grpc
 
-class MathServiceServicer(service_pb2_grpc.MathServiceServicer):
-    def Add(self, request, context):
-        result = request.num1 + request.num2
-        return service_pb2.AddResponse(result=result)
+class MyServiceServicer(service_pb2_grpc.MyServiceServicer):
+    def Greet(self, request, context):
+        return service_pb2.GreetingResponse(message=f"Hello, {request.name}!")
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    service_pb2_grpc.add_MathServiceServicer_to_server(MathServiceServicer(), server)
-    server.add_insecure_port("[::]:50051")
+    service_pb2_grpc.add_MyServiceServicer_to_server(MyServiceServicer(), server)
+    server.add_insecure_port('[::]:50051')
+    print("Python Server started at [::]:50051")
     server.start()
-    print("Python gRPC Server started on port 50051")
     server.wait_for_termination()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     serve()

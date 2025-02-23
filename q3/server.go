@@ -3,34 +3,33 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
 
-	pb "service/servicepb"
+	pb "my-proj/service"
 
 	"google.golang.org/grpc"
 )
 
 type server struct {
-	pb.UnimplementedMathServiceServer
+	pb.UnimplementedMyServiceServer
 }
 
-func (s *server) Add(ctx context.Context, req *pb.AddRequest) (*pb.AddResponse, error) {
-	result := req.Num1 + req.Num2
-	return &pb.AddResponse{Result: result}, nil
+func (s *server) Greet(ctx context.Context, in *pb.GreetingRequest) (*pb.GreetingResponse, error) {
+	return &pb.GreetingResponse{Message: "Hello, " + in.GetName()}, nil
 }
 
 func main() {
-	listener, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		fmt.Println("Failed to listen:", err)
-		return
+		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
-	pb.RegisterMathServiceServer(grpcServer, &server{})
+	s := grpc.NewServer()
+	pb.RegisterMyServiceServer(s, &server{})
 
-	fmt.Println("Go gRPC Server started on port 50051")
-	if err := grpcServer.Serve(listener); err != nil {
-		fmt.Println("Failed to serve:", err)
+	fmt.Println("Go Server started at :50051")
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
