@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package swim;
+
+service SwimService {
+  // 1) Direct ping
+  rpc Ping(PingRequest) returns (PingResponse);
+
+  // 2) Indirect ping
+  rpc IndirectPing(IndirectPingRequest) returns (PingResponse);
+}
+
+// Request for direct ping
+message PingRequest {
+  string from_id = 1;
+}
+
+// Response to direct ping
+message PingResponse {
+  bool ack = 1;
+  string from_id = 2;
+}
+
+// Indirect ping request (A->X->B)
+message IndirectPingRequest {
+  string original_id = 1;
+  string target_id = 2;
+}

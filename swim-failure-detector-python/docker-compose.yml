@@ -1,0 +1,64 @@
+services:
+  node1:
+    build: .
+    container_name: node1
+    environment:
+      - NODE_ID=Node1
+      - PORT=50051
+      - MEMBERS="Node1:node1:50051,Node2:node2:50052,Node3:node3:50053,Node4:node4:50054,Node5:node5:50055"
+    networks:
+      - swim-net
+    ports:
+      - "50051:50051"
+
+  node2:
+    build: .
+    container_name: node2
+    environment:
+      - NODE_ID=Node2
+      - PORT=50052
+      - MEMBERS="Node1:node1:50051,Node2:node2:50052,Node3:node3:50053,Node4:node4:50054,Node5:node5:50055"
+    networks:
+      - swim-net
+    ports:
+      - "50052:50052"
+
+  node3:
+    build: .
+    container_name: node3
+    environment:
+      - NODE_ID=Node3
+      - PORT=50053
+      - MEMBERS="Node1:node1:50051,Node2:node2:50052,Node3:node3:50053,Node4:node4:50054,Node5:node5:50055"
+    networks:
+      - swim-net
+    ports:
+      - "50053:50053"
+
+  node4:
+    build: .
+    container_name: node4
+    environment:
+      - NODE_ID=Node4
+      - PORT=50054
+      - MEMBERS="Node1:node1:50051,Node2:node2:50052,Node3:node3:50053,Node4:node4:50054,Node5:node5:50055"
+    networks:
+      - swim-net
+    ports:
+      - "50054:50054"
+
+  node5:
+    build: .
+    container_name: node5
+    environment:
+      - NODE_ID=Node5
+      - PORT=50055
+      - MEMBERS="Node1:node1:50051,Node2:node2:50052,Node3:node3:50053,Node4:node4:50054,Node5:node5:50055"
+    networks:
+      - swim-net
+    ports:
+      - "50055:50055"
+
+networks:
+  swim-net:
+    driver: bridge
