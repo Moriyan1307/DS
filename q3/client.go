@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial("go-server:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -20,7 +20,7 @@ func main() {
 
 	c := pb.NewMyServiceClient(conn)
 
-	name := "Bob"
+	name := "Muskan - Golang"
 	if len(os.Args) > 1 {
 		name = os.Args[1]
 	}

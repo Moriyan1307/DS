@@ -1,29 +1,29 @@
 version: "3.8"
 
 services:
-  python-server:
-    build:
-      context: .
-      dockerfile: Dockerfile-python
-    ports:
-      - "50051:50051"
-    networks:
-      - grpc-network
+  # python-server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-python
+  #   ports:
+  #     - "50052:50052"
+  #   networks:
+  #     - grpc-network
 
-  python-client:
-    build:
-      context: .
-      dockerfile: Dockerfile-python
-    command: python client.py
-    networks:
-      - grpc-network
+  # python-client:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-python
+  #   command: python client.py
+  #   networks:
+  #     - grpc-network
 
   go-server:
     build:
       context: .
       dockerfile: Dockerfile-go
     ports:
-      - "50052:50052"
+      - "50051:50051"
     networks:
       - grpc-network
 
